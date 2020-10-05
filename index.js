@@ -2,18 +2,21 @@ const express = require('express')
 const bodyParser=require('body-parser');
 const cors =require('cors');
 const { ObjectID } = require('mongodb');
-require('dotenv').config()
 const MongoClient = require('mongodb').MongoClient;
-const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.sbjn6.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
-const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
+const uri = "mongodb+srv://volunteers:asdfgtrewq12345@cluster0.sbjn6.mongodb.net/volunteer?retryWrites=true&w=majority";
+require('dotenv').config()
+
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 app.use(cors());
 
+
+const client = new MongoClient(uri, { useNewUrlParser: true,useUnifiedTopology: true });
 client.connect(err => {
   const works = client.db("volunteer").collection("works");
   const registers = client.db("volunteer").collection("registers");
+  console.log('connected')
 app.post('/addWorks',(req,res)=>{
   const work=req.body;
   works.insertOne(work)
